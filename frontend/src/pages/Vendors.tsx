@@ -5,10 +5,22 @@ import { useByVendor, useVendors } from '../hooks/useAnalytics';
 import { useTimeRange } from '../hooks/useTimeRange';
 import TimeRangePicker, { rangeLabel } from '../components/TimeRangePicker';
 import { StatusBadge, RateBar, EmptyState } from '../components/ui';
-import { IconStore, IconClose, IconExternal, IconPlus } from '../components/Icons';
+import { IconStore, IconClose, IconExternal, IconPlus, IconUpload } from '../components/Icons';
 
 const fmt = (n: number) => n.toLocaleString('en-IN');
 const emptyVendorForm = { name: '', url: '', content: '' };
+
+/** Read a chosen .js file's text into a content setter, recording its name. */
+async function readScriptFile(
+  file: File | undefined | null,
+  setContent: (text: string) => void,
+  setName: (name: string) => void
+) {
+  if (!file) return;
+  const text = await file.text();
+  setContent(text);
+  setName(file.name);
+}
 
 export default function Vendors() {
   const { rangeKey, setRangeKey, customFrom, customTo, setCustom, from, to } = useTimeRange('7d');
@@ -21,6 +33,8 @@ export default function Vendors() {
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [vendorForm, setVendorForm] = useState(emptyVendorForm);
+  const [addFileName, setAddFileName] = useState('');
+  const [editFileName, setEditFileName] = useState('');
   const qc = useQueryClient();
 
   const selectedVendor = vendors?.find((v) => v.id === selected);
@@ -85,6 +99,7 @@ export default function Vendors() {
         qc.invalidateQueries({ queryKey: ['summary'] }),
       ]);
       setVendorForm(emptyVendorForm);
+      setAddFileName('');
       setAdding(false);
     } catch (err) {
       setCreateError(err instanceof Error ? err.message : 'Could not add vendor.');
@@ -101,7 +116,7 @@ export default function Vendors() {
           <div style={{ color: 'var(--muted)', fontSize: 13.5, marginTop: 6 }}>Fill volume and reliability per vendor · {rangeLabel(rangeKey, from, to)}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-          <button className="btn btn-primary" onClick={() => { setCreateError(null); setAdding(true); }}>
+          <button className="btn btn-primary" onClick={() => { setCreateError(null); setVendorForm(emptyVendorForm); setAddFileName(''); setAdding(true); }}>
             <IconPlus size={16} /> Add vendor
           </button>
           <TimeRangePicker selected={rangeKey} customFrom={customFrom} customTo={customTo} onChange={setRangeKey} onCustomChange={setCustom} />
@@ -139,7 +154,7 @@ export default function Vendors() {
                     </div>
                   </td>
                   <td style={{ textAlign: 'right' }}>
-                    <button className="btn btn-ghost" onClick={() => { setSelected(v.vendorId); setEditing(vendors?.find((x) => x.id === v.vendorId)?.scripts[0]?.content ?? ''); }}>
+                    <button className="btn btn-ghost" onClick={() => { setSelected(v.vendorId); setEditFileName(''); setEditing(vendors?.find((x) => x.id === v.vendorId)?.scripts[0]?.content ?? ''); }}>
                       Edit script
                     </button>
                   </td>
@@ -163,8 +178,20 @@ export default function Vendors() {
               <button className="btn btn-ghost" style={{ padding: 7 }} onClick={() => setSelected(null)}><IconClose size={16} /></button>
             </div>
             <div className="modal-body">
-              <div className="eyebrow" style={{ marginBottom: 8 }}>Autofill script source</div>
-              <textarea className="code" value={editing} onChange={(e) => setEditing(e.target.value)} spellCheck={false} />
+              <div className="field-head" style={{ marginBottom: 8 }}>
+                <div className="eyebrow">Autofill script source</div>
+                <label className="upload-btn">
+                  <IconUpload size={14} /> {editFileName ? 'Replace .js' : 'Upload .js'}
+                  <input
+                    type="file"
+                    accept=".js,text/javascript,application/javascript"
+                    hidden
+                    onChange={(e) => { readScriptFile(e.target.files?.[0], setEditing, setEditFileName); e.target.value = ''; }}
+                  />
+                </label>
+              </div>
+              {editFileName && <div className="upload-name" style={{ marginBottom: 8 }}>Loaded {editFileName}</div>}
+              <textarea className="code" value={editing} onChange={(e) => { setEditing(e.target.value); if (editFileName) setEditFileName(''); }} spellCheck={false} />
             </div>
             <div className="modal-foot">
               <button className="btn btn-ghost" onClick={() => setSelected(null)}>Cancel</button>
@@ -205,16 +232,32 @@ export default function Vendors() {
                     type="url"
                   />
                 </label>
-                <label className="field">
-                  <span>Autofill script</span>
+                <div className="field">
+                  <div className="field-head">
+                    <span>Autofill script</span>
+                    <label className="upload-btn">
+                      <IconUpload size={14} /> {addFileName ? 'Replace .js' : 'Upload .js'}
+                      <input
+                        type="file"
+                        accept=".js,text/javascript,application/javascript"
+                        hidden
+                        onChange={(e) => {
+                          readScriptFile(e.target.files?.[0], (text) => setVendorForm((form) => ({ ...form, content: text })), setAddFileName);
+                          e.target.value = '';
+                          setCreateError(null);
+                        }}
+                      />
+                    </label>
+                  </div>
+                  {addFileName && <div className="upload-name">Loaded {addFileName}</div>}
                   <textarea
                     className="code code-compact"
                     value={vendorForm.content}
-                    onChange={(e) => setVendorForm((form) => ({ ...form, content: e.target.value }))}
-                    placeholder="window.HeadoutAutomation = { ... };"
+                    onChange={(e) => { setVendorForm((form) => ({ ...form, content: e.target.value })); if (addFileName) setAddFileName(''); }}
+                    placeholder="Paste the script, or upload a .js file"
                     spellCheck={false}
                   />
-                </label>
+                </div>
               </div>
               {createError && <div className="form-error">{createError}</div>}
             </div>

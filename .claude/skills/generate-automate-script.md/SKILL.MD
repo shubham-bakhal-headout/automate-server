@@ -46,7 +46,12 @@ the `vendorsInfo` entry matching `vendorId` (`productCode`, `productName`),
 ### 2 — Explore the site live
 
 Read `references/exploration-checklist.md` and follow it with the browser tools
-(navigate, screenshot, read_page/get_page_text, find, javascript_tool). Map the full
+(navigate, screenshot, read_page/get_page_text, find, javascript_tool).
+
+**First, get an English view of the site** — see "Language policy" below. Do this
+before mapping anything, so the funnel you capture is already in English.
+
+Then map the full
 funnel **for every variant the JSON can express** — all products, weekday/weekend/
 holiday splits, every pax type, all session times. **Validate each selector live with
 `javascript_tool` before using it.** Stop before card entry — never buy.
@@ -65,7 +70,13 @@ confirmation reference.
 
 Copy `assets/booking-template.js` and fill in:
 
-- `CONFIG` — portal hostname, `language` (if instructions require one), timeouts.
+- `CONFIG` — portal hostname, `language` (target locale — **`'en'` by default**, or
+  the locale the instructions explicitly require), timeouts.
+- `ensureLanguage` — force the site into `CONFIG.language` before any other step
+  (apply the URL param / cookie / switcher discovered during exploration; see
+  "Language policy"). If the vendor has no English locale, leave it a no-op with a
+  `// TODO(verify):` note and build the rest of the script on language-independent
+  selectors.
 - Each site-specific function (`dismissInterstitials`, `ensureLanguage`,
   `selectProduct`, `selectDate`, `selectTime`, `setPax`, `addToCartAndProceed`,
   `fillCustomerDetails`, `reachPayment`, `readDisplayedTotal`, `extractConfirmation`).
@@ -115,10 +126,47 @@ Save to the **current working directory**. Then output:
 <table of every selector used, for maintenance>
 ```
 
+## Language policy (non-English vendor sites)
+
+The site may render in Spanish, French, etc. **Explore it in English and emit an
+English-only script** — but never let a translated string become a selector. Why:
+Chrome/Google Translate rewrites text nodes *in your view only* (wrapping runs in
+`<font>` tags); the DOM the script reads at runtime stays in the original language, so
+`findByText('Buy tickets')` would match nothing live. Use this order:
+
+1. **Prefer the site's native English locale (best).** During exploration, look for a
+   real language switch and use it:
+   - language dropdown / flag selector in the header or footer;
+   - URL locale — `?lang=en`, `?locale=en`, `hl=en`, or an `/en/` path segment;
+   - a locale cookie or `Accept-Language`.
+   Navigate to the English version and map the funnel there. Its DOM text is genuinely
+   English — readable *and* selector-stable. Record the exact switch and reproduce it
+   in `ensureLanguage()` so the script always runs in English.
+
+2. **No native English → don't translate selectors.** Build selectors from
+   language-independent anchors: `data-*`, `id`, `name`, `type`, `aria-*`, roles,
+   structural position, numeric/price patterns. Where text matching is unavoidable,
+   match the site's **real native text** and annotate it in English, e.g.
+   `findByText('Comprar') // "Buy"`. `ensureLanguage()` becomes a no-op with a
+   `// TODO(verify):` note.
+
+3. **Chrome translate is a comprehension aid only.** It's fine to switch it on to
+   understand what a control does, but **turn it off before validating any selector
+   with `javascript_tool`**, and never copy translated text into the script.
+
+**Always, regardless of site language:** everything you author is English — function
+and variable names, `paxMap`/field-mapping keys, `PROGRESS` messages, comments, and the
+integration summary. The only permitted non-English strings are native-language
+selector literals, each carrying an English translation comment.
+
 ## Hard rules
 
 - **Never complete a real booking / never enter card details.** Stop at payment.
 - Prefer stable selectors (data-\*, aria, visible text) over brittle CSS classes.
 - Handle every pax type and date/session variant — not just the sample.
-- Honour instruction-driven specifics (language, identity ID, payment method).
+- Honour instruction-driven specifics (identity ID, payment method).
+- **Explore and write in English** (see "Language policy"): prefer the site's native
+  English locale; otherwise use language-independent selectors. Never derive a selector
+  from Chrome/Google-translated text. The script — names, keys, messages, comments — is
+  English-only; native selector literals get an English translation comment.
 - Keep the contract intact so the extension integration in `references/contract.md` holds.

@@ -41,3 +41,6 @@ export const IconExternal = ({ size }: P) => (
 export const IconPlus = ({ size }: P) => (
   <svg {...base(size)}><path d="M12 5v14M5 12h14" /></svg>
 );
+export const IconUpload = ({ size }: P) => (
+  <svg {...base(size)}><path d="M12 16V4M7 9l5-5 5 5M5 20h14" /></svg>
+);
