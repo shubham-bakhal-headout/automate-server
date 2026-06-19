@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ScriptStatus {
+  ACTIVE
+  FAILING
+  DISABLED
+}
+
+enum FillStatus {
+  SUCCESS
+  PARTIAL
+  FAILURE
+}
+
+model Vendor {
+  id        String      @id @default(cuid())
+  name      String
+  url       String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  scripts   Script[]
+  events    FillEvent[]
+}
+
+model Script {
+  id        String       @id @default(cuid())
+  vendorId  String
+  vendor    Vendor       @relation(fields: [vendorId], references: [id])
+  version   Int
+  content   String
+  fieldMap  Json?
+  status    ScriptStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  events    FillEvent[]
+
+  @@unique([vendorId, version])
+}
+
+model User {
+  id        String      @id @default(cuid())
+  email     String      @unique
+  name      String?
+  team      String?
+  createdAt DateTime    @default(now())
+  events    FillEvent[]
+}
+
+model FillEvent {
+  id           String     @id @default(cuid())
+  vendorId     String
+  vendor       Vendor     @relation(fields: [vendorId], references: [id])
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  scriptId     String?
+  script       Script?    @relation(fields: [scriptId], references: [id])
+  bookingId    String?
+  status       FillStatus
+  durationMs   Int?
+  fieldResults Json?
+  error        String?
+  createdAt    DateTime   @default(now())
+
+  @@index([createdAt])
+  @@index([vendorId])
+  @@index([userId])
+}
