@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p .claude/skills)",
+      "Bash(ln -sfn ../../generate-automate-script .claude/skills/generate-automate-script)",
+      "WebFetch(domain:jegyek.szechenyifurdo.hu)",
+      "Bash(curl -sS -A \"Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0 Safari/537.36\" -D - -o root.html \"https://jegyek.szechenyifurdo.hu/\" --max-time 30)",
+      "Bash(command -v curl)",
+      "Read(//usr/bin/**)",
+      "Bash(open -a \"Google Chrome\" \"https://jegyek.szechenyifurdo.hu/product/feb803ad-d348-42cc-95f7-f52113ee392b\")",
+      "Bash(osascript -e 'tell application \"Google Chrome\" to return URL of active tab of front window')",
+      "Bash(osascript *)",
+      "Bash(node *)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --remote-debugging-port=9222 --user-data-dir=/private/tmp/claude-501/-Users-apple-Desktop-Hackathon/c0b93f85-7348-4d4f-b1a6-464dee37d682/scratchpad/chrome-debug-profile --no-first-run --no-default-browser-check https://jegyek.szechenyifurdo.hu/product/feb803ad-d348-42cc-95f7-f52113ee392b)",
+      "Bash(echo \"launched pid $!\")",
+      "Bash(/usr/bin/curl -sS http://127.0.0.1:9222/json/version --max-time 10)",
+      "Bash(/usr/bin/curl -sS http://127.0.0.1:9222/json --max-time 10)",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const c=document.querySelector\\('#country_id'\\); const s=Object.getOwnPropertyDescriptor\\(window.HTMLInputElement.prototype,'value'\\).set; s.call\\(c,''\\); c.dispatchEvent\\(new Event\\('input',{bubbles:true}\\)\\); c.focus\\(\\); c.click\\(\\); return 'focused+cleared'; }\\)\\(\\)\")",
+      "Bash(node cdp.js type \"Magyar\")",
+      "Bash(node cdp.js eval '\\(\\(\\) => { *)",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const t=[...document.querySelectorAll\\('button'\\)].find\\(b=>/tovább/i.test\\(b.innerText\\)\\); t.click\\(\\); return 'clicked TOVABB'; }\\)\\(\\)\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const c=document.querySelector\\('#country_id'\\); const s=Object.getOwnPropertyDescriptor\\(window.HTMLInputElement.prototype,'value'\\).set; s.call\\(c,''\\); c.dispatchEvent\\(new Event\\('input',{bubbles:true}\\)\\); c.focus\\(\\); c.click\\(\\); return 'opened menu'; }\\)\\(\\)\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const t=[...document.querySelectorAll\\('button'\\)].find\\(b=>/^tovább/i.test\\(b.innerText.trim\\(\\)\\)\\); t.click\\(\\); return 'clicked TOVABB'; }\\)\\(\\)\")",
+      "Bash(node cdp.js navigate \"https://jegyek.szechenyifurdo.hu/product/feb803ad-d348-42cc-95f7-f52113ee392b\")",
+      "Bash(node cdp.js evalfile \"/Users/apple/Desktop/Hackathon/jegyek_szechenyifurdo_hu.js\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { window.__prog=[]; window.__result=null; window.addEventListener\\('message',e=>{ if\\(e.data&&e.data.source==='HeadoutAutomation'&&e.data.type==='PROGRESS'\\) window.__prog.push\\(e.data.step+': '+e.data.message\\); }\\); window.HeadoutAutomation.run\\({ inventoryDate:'2026-07-03', guestNumbers:[{type:'ADULT',count:2}], customerName:'Jane Tester', customerEmail:'jane.tester@example.com', tourCurrency:'HUF' }\\).then\\(r=>window.__result=r\\); return 'started'; }\\)\\(\\)\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { window.__prog=[]; window.__result=null; window.addEventListener\\('message',e=>{ if\\(e.data&&e.data.source==='HeadoutAutomation'&&e.data.type==='PROGRESS'\\) window.__prog.push\\(e.data.step+': '+e.data.message\\); }\\); window.HeadoutAutomation.run\\({ inventoryDate:'2026-07-03', guestNumbers:[{type:'ADULT',count:2}], customerName:'Jane Tester', customerEmail:'jane.tester@example.com', tourCurrency:'HUF', expectedTotalHUF:31600 }\\).then\\(r=>window.__result=r\\); return 'started'; }\\)\\(\\)\")",
+      "Bash(node cdp.js navigate \"https://jegyek.szechenyifurdo.hu/cart\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const d=document.querySelector\\('svg.delete-ticket,.delete-ticket'\\); if\\(d\\){d.dispatchEvent\\(new MouseEvent\\('click',{bubbles:true}\\)\\); return 'del clicked';} return 'none'; }\\)\\(\\)\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const c=document.querySelector\\('.swal2-confirm'\\); if\\(c\\)c.click\\(\\); return 'ok'; }\\)\\(\\)\")",
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const d=document.querySelector\\('svg.delete-ticket,.delete-ticket'\\); if\\(d\\)d.dispatchEvent\\(new MouseEvent\\('click',{bubbles:true}\\)\\); return 'x'; }\\)\\(\\)\")"
+    ]
+  }
+}
