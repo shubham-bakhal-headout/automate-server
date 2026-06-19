@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '../api/client';
 import { useScriptHealth, type ScriptHealth as Script } from '../hooks/useAnalytics';
 import { StatusBadge, EmptyState } from '../components/ui';
 import { IconShield, IconCheck } from '../components/Icons';
@@ -10,7 +11,7 @@ export default function ScriptHealth() {
   const qc = useQueryClient();
 
   async function markActive(scriptId: string) {
-    await fetch(`/api/scripts/${scriptId}`, {
+    await apiRequest(`/api/scripts/${scriptId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'ACTIVE' }),

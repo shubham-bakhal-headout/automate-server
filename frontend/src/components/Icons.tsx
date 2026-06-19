@@ -38,3 +38,6 @@ export const IconClose = ({ size }: P) => (
 export const IconExternal = ({ size }: P) => (
   <svg {...base(size)}><path d="M14 5h5v5M19 5l-8 8M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5" /></svg>
 );
+export const IconPlus = ({ size }: P) => (
+  <svg {...base(size)}><path d="M12 5v14M5 12h14" /></svg>
+);

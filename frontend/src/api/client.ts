@@ -6,3 +6,9 @@ export async function apiFetch<T>(path: string): Promise<T> {
   const json = await res.json() as { data: T };
   return json.data;
 }
+
+export async function apiRequest(path: string, init?: RequestInit): Promise<Response> {
+  const res = await fetch(`${BASE}${path}`, init);
+  if (!res.ok) throw new Error(`API error ${res.status}: ${path}`);
+  return res;
+}

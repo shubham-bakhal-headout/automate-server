@@ -11,7 +11,7 @@ router.get('/', async (_req, res) => {
       scripts: {
         orderBy: { version: 'desc' },
         take: 1,
-        select: { id: true, version: true, status: true },
+        select: { id: true, version: true, status: true, content: true },
       },
       _count: { select: { events: true } },
     },
