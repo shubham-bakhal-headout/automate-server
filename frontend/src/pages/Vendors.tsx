@@ -5,7 +5,7 @@ import { useByVendor, useVendors } from '../hooks/useAnalytics';
 import { useTimeRange } from '../hooks/useTimeRange';
 import TimeRangePicker, { rangeLabel } from '../components/TimeRangePicker';
 import { StatusBadge, RateBar, EmptyState } from '../components/ui';
-import { IconStore, IconClose, IconExternal, IconPlus, IconUpload } from '../components/Icons';
+import { IconStore, IconClose, IconExternal, IconPlus, IconUpload, IconTrash } from '../components/Icons';
 
 const fmt = (n: number) => n.toLocaleString('en-IN');
 const emptyVendorForm = { name: '', url: '', content: '' };
@@ -29,6 +29,7 @@ export default function Vendors() {
   const [selected, setSelected] = useState<string | null>(null);
   const [editing, setEditing] = useState('');
   const [saving, setSaving] = useState(false);
+  const [deletingScript, setDeletingScript] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -39,6 +40,10 @@ export default function Vendors() {
 
   const selectedVendor = vendors?.find((v) => v.id === selected);
   const latestScript = selectedVendor?.scripts[0];
+
+  function latestScriptFor(vendorId: string) {
+    return vendors?.find((vendor) => vendor.id === vendorId)?.scripts[0];
+  }
 
   async function saveScript() {
     if (!latestScript) return;
@@ -55,6 +60,24 @@ export default function Vendors() {
     ]);
     setSaving(false);
     setSelected(null);
+  }
+
+  async function deleteScript(scriptId: string, vendorName: string) {
+    if (!window.confirm(`Delete the latest autofill script for ${vendorName}?`)) return;
+
+    setDeletingScript(scriptId);
+    try {
+      await apiRequest(`/api/scripts/${scriptId}`, { method: 'DELETE' });
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ['vendors'] }),
+        qc.invalidateQueries({ queryKey: ['by-vendor'] }),
+        qc.invalidateQueries({ queryKey: ['script-health'] }),
+        qc.invalidateQueries({ queryKey: ['summary'] }),
+      ]);
+      if (latestScript?.id === scriptId) setSelected(null);
+    } finally {
+      setDeletingScript(null);
+    }
   }
 
   async function createVendor() {
@@ -141,25 +164,37 @@ export default function Vendors() {
               </tr>
             </thead>
             <tbody>
-              {stats.map((v) => (
-                <tr key={v.vendorId}>
-                  <td className="cell-strong">{v.vendorName}</td>
-                  <td><span className="cell-url">{v.vendorUrl.replace(/^https?:\/\//, '')}</span></td>
-                  <td className="num">{fmt(v.totalFills)}</td>
-                  <td>{v.totalFills > 0 ? <RateBar value={v.successRate} /> : <span style={{ color: 'var(--faint)' }}>—</span>}</td>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <StatusBadge status={v.latestScriptStatus} />
-                      {v.latestScriptVersion != null && <span className="num" style={{ fontSize: 11.5, color: 'var(--faint)' }}>v{v.latestScriptVersion}</span>}
-                    </div>
-                  </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <button className="btn btn-ghost" onClick={() => { setSelected(v.vendorId); setEditFileName(''); setEditing(vendors?.find((x) => x.id === v.vendorId)?.scripts[0]?.content ?? ''); }}>
-                      Edit script
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {stats.map((v) => {
+                const rowScript = latestScriptFor(v.vendorId);
+                return (
+                  <tr key={v.vendorId}>
+                    <td className="cell-strong">{v.vendorName}</td>
+                    <td><span className="cell-url">{v.vendorUrl.replace(/^https?:\/\//, '')}</span></td>
+                    <td className="num">{fmt(v.totalFills)}</td>
+                    <td>{v.totalFills > 0 ? <RateBar value={v.successRate} /> : <span style={{ color: 'var(--faint)' }}>-</span>}</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <StatusBadge status={v.latestScriptStatus} />
+                        {v.latestScriptVersion != null && <span className="num" style={{ fontSize: 11.5, color: 'var(--faint)' }}>v{v.latestScriptVersion}</span>}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="row-actions">
+                        <button className="btn" onClick={() => { setSelected(v.vendorId); setEditFileName(''); setEditing(rowScript?.content ?? ''); }} disabled={!rowScript}>
+                          Edit script
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => rowScript && deleteScript(rowScript.id, v.vendorName)}
+                          disabled={!rowScript || deletingScript === rowScript.id}
+                        >
+                          <IconTrash size={14} /> {deletingScript === rowScript?.id ? 'Deleting...' : 'Delete'}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -194,6 +229,10 @@ export default function Vendors() {
               <textarea className="code" value={editing} onChange={(e) => { setEditing(e.target.value); if (editFileName) setEditFileName(''); }} spellCheck={false} />
             </div>
             <div className="modal-foot">
+              <button className="btn btn-danger" onClick={() => deleteScript(latestScript.id, selectedVendor?.name ?? 'this vendor')} disabled={deletingScript === latestScript.id}>
+                <IconTrash size={14} /> {deletingScript === latestScript.id ? 'Deleting...' : 'Delete'}
+              </button>
+              <div className="modal-foot-spacer" />
               <button className="btn btn-ghost" onClick={() => setSelected(null)}>Cancel</button>
               <button className="btn btn-primary" onClick={saveScript} disabled={saving}>{saving ? 'Saving…' : 'Save new version'}</button>
             </div>

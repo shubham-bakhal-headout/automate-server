@@ -44,3 +44,6 @@ export const IconPlus = ({ size }: P) => (
 export const IconUpload = ({ size }: P) => (
   <svg {...base(size)}><path d="M12 16V4M7 9l5-5 5 5M5 20h14" /></svg>
 );
+export const IconTrash = ({ size }: P) => (
+  <svg {...base(size)}><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3" /></svg>
+);

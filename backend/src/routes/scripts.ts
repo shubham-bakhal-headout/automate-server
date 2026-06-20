@@ -60,4 +60,21 @@ router.put('/:id', async (req, res) => {
   return res.json({ data: updated });
 });
 
+// Delete a script version. Historical fill events keep their vendor record and
+// lose only the script pointer so analytics can still count the fill.
+router.delete('/:id', async (req, res) => {
+  const script = await db.script.findUnique({ where: { id: req.params.id } });
+  if (!script) return res.status(404).json({ error: 'Script not found' });
+
+  await db.$transaction([
+    db.fillEvent.updateMany({
+      where: { scriptId: script.id },
+      data: { scriptId: null },
+    }),
+    db.script.delete({ where: { id: script.id } }),
+  ]);
+
+  return res.status(204).send();
+});
+
 export default router;

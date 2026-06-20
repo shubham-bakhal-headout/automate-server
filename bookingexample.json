@@ -1,0 +1,123 @@
+{
+    "inventoryDate": "2026-06-06",
+    "inventoryTime": "08:00:00",
+    "bookingCreationTimestamp": "2026-06-05T19:08:58Z",
+    "tourGroupId": 12446,
+    "tourId": 38768,
+    "vendorId": 4204,
+    "rmsName": "WELCOME3",
+    "vendorsInfo": [
+        {
+            "productCode": "{}",
+            "supplyPartnerStatus": "ACTIVE",
+            "bookingInstructions": "Pre Purchase",
+            "vendorId": 3257,
+            "tourId": 38768,
+            "productName": "Ticket for adults with cabin usage",
+            "vendorName": "NP Budapest Spas- PP"
+        },
+        {
+            "productCode": "{\"productDefinition\":[{\"productId\":\"bf550e27-bd5b-47e7-b24d-9b7199ab7cd3\",\"daysOfWeek\":[\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\",\"SATURDAY\",\"SUNDAY\"],\"startingTime\":\"07:00:00\"}],\"productType\":\"TICKET\"}",
+            "supplyPartnerStatus": "ACTIVE",
+            "bookingInstructions": "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n        .sop-container {\r\n            font-family: 'Segoe UI', Roboto, Helvetica, Poppins, sans-serif;\r\n            max-width: 800px;\r\n            color: #2d3748;\r\n            background: #ffffff;\r\n            line-height: 1.5;\r\n            border: 1px solid #e2e8f0;\r\n            border-radius: 8px;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .sop-header {\r\n            background: #2c3e50;\r\n            color: #ffffff;\r\n            padding: 15px 20px;\r\n            font-size: 18px;\r\n            font-weight: 600;\r\n        }\r\n\r\n        .sop-content {\r\n            padding: 20px;\r\n        }\r\n\r\n        .status-table {\r\n            width: 100%;\r\n            border-collapse: collapse;\r\n            margin-bottom: 15px;\r\n        }\r\n\r\n        .status-table td {\r\n            padding: 12px;\r\n            border: 1px solid #edf2f7;\r\n            vertical-align: top;\r\n        }\r\n\r\n        .error-tag {\r\n            font-family: 'Courier New', monospace;\r\n            background: #f1f5f9;\r\n            color: #c53030;\r\n            padding: 2px 6px;\r\n            border-radius: 4px;\r\n            font-weight: bold;\r\n            font-size: 13px;\r\n        }\r\n\r\n        .rule-box {\r\n            border-left: 4px solid;\r\n            padding: 10px 15px;\r\n            margin: 10px 0;\r\n            font-size: 14px;\r\n        }\r\n\r\n        .warning {\r\n            border-color: #ecc94b;\r\n            background: #fffaf0;\r\n        }\r\n\r\n        .info {\r\n            border-color: #4299e1;\r\n            background: #ebf8ff;\r\n        }\r\n\r\n        .danger {\r\n            border-color: #f56565;\r\n            background: #fff5f5;\r\n        }\r\n\r\n        .calm {\r\n            border-color: #f69176;\r\n            background: #fef8f3;\r\n        }\r\n\r\n        .footer-banner {\r\n            background: #c53030;\r\n            color: white;\r\n            text-align: center;\r\n            padding: 10px;\r\n            font-weight: bold;\r\n            letter-spacing: 1px;\r\n            font-size: 14px;\r\n        }\r\n\r\n        ul {\r\n            margin: 5px 0;\r\n            padding-left: 20px;\r\n        }\r\n\r\n        li {\r\n            margin-bottom: 5px;\r\n        }\r\n    </style>\r\n</head>\r\n\r\n<body style=\"color: rgb(0, 0, 0); background-color: rgb(0, 0, 0);\">\r\n    <div class=\"sop-container\">\r\n        <div class=\"sop-header\">Booking Failure Handling Guidelines</div>\r\n        <h3 style=\"font-size: 16px; margin-top: 20px;\">&nbsp; &nbsp;Most booking failures occur due to timeout exceptions. Check the latest error message (EM) on Slack.</h3>\r\n        <div class=\"sop-content\">\r\n            <table class=\"status-table\">\r\n                <tbody>\r\n                    <tr style=\"background: #f8fafc; font-weight: bold;\">\r\n                        <td style=\"width: 40%;\">Scenario (Slack EM)</td>\r\n                        <td>Action Protocol</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td><span class=\"error-tag\">SocketTimeoutException</span></td>\r\n                        <td>Wait <strong>a minimum of&nbsp;</strong><strong>2-3 hours&nbsp;</strong>before retrying automation.<div class=\"rule-box warning\"><strong>Do NOT retry immediately:</strong> Prevents system deadlocks and repeat loops.</div>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td><span class=\"error-tag\">Error while calling API: transaction.id m&aacute;r l&eacute;tezik az adatb&aacute;zisban</span></td>\r\n                        <td>Fulfill <strong>m</strong><strong>anually&nbsp;</strong>on the portal. This cannot be re-automated.<div class=\"rule-box info\">Request a NEW card based on the portal price displayed, after converting to EUR. The default card will have insufficient funds and will FAIL.</div>\r\n                        </td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n            <div class=\"rule-box calm\"><span style=\"font-size: 18px;\">Ensure that the website is accessed in <strong>Hungarian</strong> and <strong>NOT English</strong>. This will allow you to book at a <strong>lesser price</strong>. You can use Google Translate if needed.</span></div>\r\n            <h3 style=\"font-size: 16px; margin-top: 20px;\">Manual Fulfillment &amp; Availability</h3>\r\n            <ul>\r\n                <li><strong>Slots Not Open:</strong> If the portal is not yet open for the date, move the booking to <strong>Future</strong> status. Monitor and book manually once open.</li>\r\n                <li><strong>Availability Logic:</strong> Never &quot;Hard Close&quot; slots based on portal status. API availability is <strong>unlimited</strong> and unrelated to portal sold-out statuses.</li>\r\n            </ul>\r\n            <div class=\"rule-box danger\"><strong>Critical:</strong> Portal unavailability &ne; API unavailability. Do NOT hard close API slots as per portal availability.</div>\r\n        </div>\r\n        <div class=\"footer-banner\">STRICTLY NO CANCELLATIONS OR MODIFICATIONS ALLOWED</div>\r\n    </div>\r\n</body>\r\n\r\n</html>",
+            "vendorId": 4204,
+            "tourId": 38768,
+            "productName": "Daily ticket with private changing room",
+            "vendorName": "Budapest Spas"
+        },
+        {
+            "productCode": "{}",
+            "supplyPartnerStatus": "ACTIVE",
+            "bookingInstructions": "<hr />\n<h3><span style=\"color: #b8312f;\">For Cancelation:</span> These tickets are NON-CANCELABLE.</h3>\n<hr />\n<p><br /><br /></p>\n<hr />\n<ul>\n<li>\n<h1><span style=\"background-color: #ccffcc;\"><strong>Please check the dates under all the sections before</strong></span><span style=\"background-color: #ccffcc;\"><strong>&nbsp;sharing alts</strong></span><span style=\"background-color: #ccffcc;\"><strong>.&nbsp;</strong></span></h1>\n</li>\n<li>\n<h1><span style=\"background-color: #ccffcc;\"><strong>Please check the time booked by the guest and book 'Morning' and 'Afternoon' session accordingly.&nbsp;</strong></span></h1>\n</li>\n</ul>\n<hr />\n<p>&nbsp;1. Click on the <strong><a href=\"https://tickets.spasbudapest.com/\">PORTAL LINK</a></strong>. Select the city of experience.</p>\n<p>&nbsp; &nbsp; &nbsp;<em>Kindly change the language to English.</em></p>\n<p>2. Click on the correct product.<br />3. Select Weekday, Weekend or Holidays as per the date.<br />4. Select the date &amp; number of pax size. Add it to the basket and click on <em><strong>Buy</strong><strong><em>&nbsp;</em>items</strong></em><br />5. Fill in customer details - Name and Phone number<br /><strong>IMPORTANT</strong> - Please use volitand ID in customer details (<strong>NON-PARTNERED</strong>)<br />6. Payment Type - Pay with Bank Card (SimplePay)<br />&nbsp; &nbsp; Create an enett card and enter the card details on checkout page<br />7. Copy the Order Reference Number and search for tickets on Zendesk with the volitand ID entered in customer details in 2 min.<br />8. Download each ticket individually.</p>\n<hr />\n<p><strong>The tickets should look like this:&nbsp;</strong></p>\n<p>&nbsp;<a href=\"https://freeimage.host/i/HEnWxvn\"><img src=\"https://iili.io/HEnWxvn.md.jpg\" alt=\"HEnWxvn.md.jpg\" border=\"0\" /></a></p>\n<hr />\n<p>&nbsp;</p>",
+            "vendorId": 3396,
+            "tourId": 38768,
+            "productName": "Daily ticket with private changing room",
+            "vendorName": "Budapest Spas NP"
+        },
+        {
+            "productCode": "{\"productId\":\"55\",\"optionId\":\"148\",\"hotelName\":0,\"paxTypeMap\":{\"Adult\":\"Adult\"},\"threshold\":0}",
+            "supplyPartnerStatus": "ACTIVE",
+            "bookingInstructions": "<br>\r\nCheck for the error message on slack. If dirty, check on aries for availability before confirming it to the customer. If the customer opts the alternative provided. <br>\r\nFollow the below process<br>\r\nOpen BMS link <br>\r\nChange the date and time <br>\r\nClick on \"Automate Booking\" <br>\r\nIf this does not work, escalate it to SO/tech. <br>",
+            "vendorId": 1499,
+            "tourId": 38768,
+            "productName": "Hungaria Koncert - Full-day entrance with Private Cabin",
+            "vendorName": "Hungaria Koncert"
+        },
+        {
+            "productCode": "{}",
+            "supplyPartnerStatus": "ACTIVE",
+            "bookingInstructions": "",
+            "vendorId": 2776,
+            "tourId": 38768,
+            "productName": "",
+            "vendorName": "Budapest 365"
+        }
+    ],
+    "pickupAddress": null,
+    "pending": false,
+    "automateRiskyBooking": false,
+    "status": "COMPLETED",
+    "tickets": [],
+    "vouchers": [],
+    "bookingId": 32008253,
+    "itineraryId": 27377299,
+    "seatInfo": "",
+    "deskCaseId": 32748933,
+    "fulfillmentType": "MANUAL",
+    "twoStepFulfillmentEnabled": false,
+    "whatsAppOptIn": true,
+    "netPrice": 134.00,
+    "netPriceEditable": true,
+    "siblingBookings": [
+        {
+            "bookingId": 32008253,
+            "bookingStatus": "COMPLETED",
+            "bmsLink": "aries.headout.com/bms/booking/32008253"
+        }
+    ],
+    "guestNumbers": [
+        {
+            "bookingId": 32008253,
+            "type": "GENERAL",
+            "persons": 3,
+            "priceRetail": 48.00,
+            "priceNet": 42.00,
+            "margin": null,
+            "commission": 12.5000,
+            "discount": 0.0000,
+            "userSellingPrice": 52.00,
+            "headoutSellingPrice": 52.00,
+            "userListingPrice": 48.00,
+            "headoutListingPrice": 48.00,
+            "uiRetailPrice": 48.00,
+            "paxDiscountAbsolute": 0.00,
+            "inventorySlotDiscountAbsolute": 0.00,
+            "headoutDiscount": 0.0000,
+            "supplyPartnerDiscount": 0.0000,
+            "venueBookableId": null,
+            "venueSeatDetail": null,
+            "venueSeatDetailV2": null,
+            "discountedRetailPrice": 48.000000
+        }
+    ],
+    "noTicketDataBooking": false,
+    "ticketTypes": [
+        "PDF_URL"
+    ],
+    "actualLeadTimeInHours": -318,
+    "fulfilmentId": 17772899,
+    "tourCurrency": "EUR",
+    "fulfilmentProcess": "DIRECT",
+    "oopCancelRescheduleConfig": {
+        "cancellationAllowed": false,
+        "cancellationMode": "EMAIL",
+        "cancellationProofRequired": false,
+        "cancellationLeadTimeMinutes": 1440,
+        "cancellationComments": "Default value"
+    },
+    "ticketUnblurred": true,
+    "dmVoucherVendorTour": null,
+    "meetingPointAddress": "Széchenyi Thermal Bath, 9-11 Állatkerti körút, Budapest, HU",
+    "meetingPointUrl": "https://www.google.com/maps/search/?api=1&query=1&query_place_id=ChIJd1VnBYbbQUcREiSNtgjDwMs",
+    "appPushMode": "SOFT_PUSH"
+}

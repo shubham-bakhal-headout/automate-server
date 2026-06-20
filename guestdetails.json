@@ -1,0 +1,189 @@
+{
+    "bookingId": "30833878",
+    "calipsoUserId": "16588970",
+    "device": "DESKTOP",
+    "primaryGuest": {
+        "firstName": "Nur Sharafazmin binti",
+        "lastName": "Mazlan",
+        "email": "fazmin.info@gmail.com",
+        "bookingUserFields": []
+    },
+    "loginStatus": "NOT_SIGNED_UP",
+    "paxDetails": [
+        {
+            "paxType": "ADULT",
+            "displayName": "Adult",
+            "count": 2,
+            "pluralDisplayName": "Adults"
+        },
+        {
+            "paxType": "INFANT",
+            "displayName": "Infant",
+            "count": 1,
+            "pluralDisplayName": "Infants"
+        }
+    ],
+    "guests": [
+        {
+            "firstName": "Nur Sharafazmin binti",
+            "lastName": "Mazlan",
+            "email": "fazmin.info@gmail.com",
+            "bookingUserFields": [
+                {
+                    "id": 93367248,
+                    "bookingId": 30833878,
+                    "tourUserFieldId": 253549,
+                    "tourUserFieldLevel": "ALL_CUSTOMER",
+                    "tourUserFieldType": {
+                        "displayName": "Full Name",
+                        "dataType": "STRING",
+                        "regex": "\\s*[^\\s]+\\s+[^\\s]+.*",
+                        "minLength": 3,
+                        "maxLength": 80,
+                        "minValue": null,
+                        "maxValue": null,
+                        "errorMessage": "Please enter your full name",
+                        "name": "NAME"
+                    },
+                    "tourUserCustomFieldType": "STRING",
+                    "name": "Full Name",
+                    "value": "Nur Sharafazmin binti Mazlan",
+                    "customerNumber": 1,
+                    "latitude": null,
+                    "longitude": null,
+                    "address": null,
+                    "fieldInputStatus": "PROVIDED",
+                    "required": false,
+                    "primary": null,
+                    "isSelfDrive": false
+                },
+                {
+                    "id": 93367249,
+                    "bookingId": 30833878,
+                    "tourUserFieldId": 253551,
+                    "tourUserFieldLevel": "PRIMARY_CUSTOMER",
+                    "tourUserFieldType": {
+                        "displayName": "Phone",
+                        "dataType": "STRING",
+                        "regex": null,
+                        "minLength": null,
+                        "maxLength": 40,
+                        "minValue": null,
+                        "maxValue": null,
+                        "errorMessage": null,
+                        "name": "PHONE"
+                    },
+                    "tourUserCustomFieldType": "STRING",
+                    "name": "Phone",
+                    "value": "+60122832646",
+                    "customerNumber": 1,
+                    "latitude": null,
+                    "longitude": null,
+                    "address": null,
+                    "fieldInputStatus": "PROVIDED",
+                    "required": false,
+                    "primary": null,
+                    "isSelfDrive": false
+                },
+                {
+                    "id": 93367250,
+                    "bookingId": 30833878,
+                    "tourUserFieldId": 253550,
+                    "tourUserFieldLevel": "PRIMARY_CUSTOMER",
+                    "tourUserFieldType": {
+                        "displayName": "Email",
+                        "dataType": "STRING",
+                        "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                        "minLength": 5,
+                        "maxLength": null,
+                        "minValue": null,
+                        "maxValue": null,
+                        "errorMessage": "Please enter a valid email",
+                        "name": "EMAIL"
+                    },
+                    "tourUserCustomFieldType": "STRING",
+                    "name": "Email",
+                    "value": "fazmin.info@gmail.com",
+                    "customerNumber": 1,
+                    "latitude": null,
+                    "longitude": null,
+                    "address": null,
+                    "fieldInputStatus": "PROVIDED",
+                    "required": false,
+                    "primary": null,
+                    "isSelfDrive": false
+                }
+            ]
+        },
+        {
+            "firstName": "Halim",
+            "lastName": "Kurniawan",
+            "email": null,
+            "bookingUserFields": [
+                {
+                    "id": 93367251,
+                    "bookingId": 30833878,
+                    "tourUserFieldId": 253549,
+                    "tourUserFieldLevel": "ALL_CUSTOMER",
+                    "tourUserFieldType": {
+                        "displayName": "Full Name",
+                        "dataType": "STRING",
+                        "regex": "\\s*[^\\s]+\\s+[^\\s]+.*",
+                        "minLength": 3,
+                        "maxLength": 80,
+                        "minValue": null,
+                        "maxValue": null,
+                        "errorMessage": "Please enter your full name",
+                        "name": "NAME"
+                    },
+                    "tourUserCustomFieldType": "STRING",
+                    "name": "Full Name",
+                    "value": "Halim Kurniawan",
+                    "customerNumber": 2,
+                    "latitude": null,
+                    "longitude": null,
+                    "address": null,
+                    "fieldInputStatus": "PROVIDED",
+                    "required": false,
+                    "primary": null,
+                    "isSelfDrive": false
+                }
+            ]
+        },
+        {
+            "firstName": "Aaira Utari",
+            "lastName": "Kurniawan",
+            "email": null,
+            "bookingUserFields": [
+                {
+                    "id": 93367252,
+                    "bookingId": 30833878,
+                    "tourUserFieldId": 253549,
+                    "tourUserFieldLevel": "ALL_CUSTOMER",
+                    "tourUserFieldType": {
+                        "displayName": "Full Name",
+                        "dataType": "STRING",
+                        "regex": "\\s*[^\\s]+\\s+[^\\s]+.*",
+                        "minLength": 3,
+                        "maxLength": 80,
+                        "minValue": null,
+                        "maxValue": null,
+                        "errorMessage": "Please enter your full name",
+                        "name": "NAME"
+                    },
+                    "tourUserCustomFieldType": "STRING",
+                    "name": "Full Name",
+                    "value": "Aaira Utari Kurniawan",
+                    "customerNumber": 3,
+                    "latitude": null,
+                    "longitude": null,
+                    "address": null,
+                    "fieldInputStatus": "PROVIDED",
+                    "required": false,
+                    "primary": null,
+                    "isSelfDrive": false
+                }
+            ]
+        }
+    ]
+}

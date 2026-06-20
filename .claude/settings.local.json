@@ -28,7 +28,8 @@
       "Bash(node cdp.js navigate \"https://jegyek.szechenyifurdo.hu/cart\")",
       "Bash(node cdp.js eval \"\\(\\(\\) => { const d=document.querySelector\\('svg.delete-ticket,.delete-ticket'\\); if\\(d\\){d.dispatchEvent\\(new MouseEvent\\('click',{bubbles:true}\\)\\); return 'del clicked';} return 'none'; }\\)\\(\\)\")",
       "Bash(node cdp.js eval \"\\(\\(\\) => { const c=document.querySelector\\('.swal2-confirm'\\); if\\(c\\)c.click\\(\\); return 'ok'; }\\)\\(\\)\")",
-      "Bash(node cdp.js eval \"\\(\\(\\) => { const d=document.querySelector\\('svg.delete-ticket,.delete-ticket'\\); if\\(d\\)d.dispatchEvent\\(new MouseEvent\\('click',{bubbles:true}\\)\\); return 'x'; }\\)\\(\\)\")"
+      "Bash(node cdp.js eval \"\\(\\(\\) => { const d=document.querySelector\\('svg.delete-ticket,.delete-ticket'\\); if\\(d\\)d.dispatchEvent\\(new MouseEvent\\('click',{bubbles:true}\\)\\); return 'x'; }\\)\\(\\)\")",
+      "Read(//Users/apple/Desktop/Hackathon/**)"
     ]
   }
 }
